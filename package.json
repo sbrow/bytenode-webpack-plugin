@@ -1,0 +1,42 @@
+{
+  "name": "bytenode-webpack-plugin",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "repository": "https://github.com/sbrow/bytenode-webpack-plugin",
+  "author": "Spencer Brower",
+  "license": "GPL-3.0+",
+  "keywords": [
+    "webpack",
+    "plugin"
+  ],
+  "description": "Shims your entry points so they can be compiled by Bytenode.",
+  "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "webpack": "^4.0.0"
+  },
+  "dependencies": {
+    "webpack-virtual-modules": "^0.1.11"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "@sbrow/eslint-config": "^1.3.1",
+    "@sbrow/prettier-config": "^1.0.2",
+    "@types/node": "^12.7.2",
+    "@types/webpack": "^4.39.0",
+    "commitlint": "^8.1.0",
+    "husky": "^3.0.4",
+    "standard-version": "^7.0.0",
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.2"
+  },
+  "prettier": "@sbrow/prettier",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
