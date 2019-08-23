@@ -21,7 +21,7 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "prepare": "build"
+    "prepare": "yarn build"
   },
   "peerDependencies": {
     "webpack": "^4.0.0"
