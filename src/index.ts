@@ -1,4 +1,4 @@
-import { basename, dirname, join} from "path";
+import { basename, dirname, join } from "path";
 import { Compiler, Configuration, Plugin, SingleEntryPlugin } from "webpack";
 import VirtualModulesPlugin from "webpack-virtual-modules";
 import ExternalsPlugin from "webpack/lib/ExternalsPlugin";
@@ -6,11 +6,14 @@ import NodeTargetPlugin from "webpack/lib/node/NodeTargetPlugin";
 
 export interface Options {
     entries: string | { [name: string]: string };
+    external?: boolean;
 }
 
 export class BytenodePlugin implements Plugin {
-    public entries: { [name: string]: string };
-    constructor({ entries }: Options) {
+    public entries: Options["entries"];
+    public external: Options["external"];
+
+    constructor({ entries, external }: Options) {
         if (typeof entries === "string") {
             this.entries = {};
             this.entries[basename(entries).replace(/\..*$/, "")] = entries;
@@ -19,20 +22,24 @@ export class BytenodePlugin implements Plugin {
         } else {
             throw new Error("entries not valid");
         }
+        this.external = external === true;
     }
 
     public apply(compiler: Compiler): void {
         this.createStub(compiler);
 
-        compiler.hooks.entryOption.tap(BytenodePlugin.name, (context, entry) => {
-            for (const name of Object.keys(entry)) {
-                if (name in this.entries) {
-                    const newName = this.entries[name];
-                    entry[newName] = entry[name];
-                    delete entry[name];
+        compiler.hooks.entryOption.tap(
+            BytenodePlugin.name,
+            (context, entry) => {
+                for (const name of Object.keys(entry)) {
+                    if (name in this.entries) {
+                        const newName = this.entries[name];
+                        entry[newName] = entry[name];
+                        delete entry[name];
+                    }
                 }
-            }
-        });
+            },
+        );
         compiler.hooks.make.tapAsync(BytenodePlugin.name, (compilation, cb) => {
             for (const entry of Object.keys(this.entries)) {
                 const value = this.entries[entry];
@@ -40,7 +47,10 @@ export class BytenodePlugin implements Plugin {
                     const childOptions: Configuration = {
                         ...compiler.options,
                         entry: {},
-                        externals: {},
+                        externals:
+                            this.external === true
+                                ? { bytenode: "commonjs bytenode" }
+                                : {},
                     };
                     childOptions.entry[entry] = join(
                         dirname(compiler.options.entry[value]),
