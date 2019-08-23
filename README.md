@@ -1,8 +1,8 @@
 # bytenode-webpack-plugin
 
-This plugin makes it easier to use [Bytenode](https://github.com/OsamaAbbas/bytenode) to protect your source code by shimming out your entry points.
+This plugin makes it easy to use protect your source code with [Bytenode](https://github.com/OsamaAbbas/bytenode) by replacing your entry point with a script that can import bytecode.
 
-It turns this:
+In short, it turns this:
 
 ```js
 // index.js
@@ -30,10 +30,36 @@ function hello() {
 module.exports = hello;
 ```
 
-You can then turn `main.js` into bytecode using:
+# Setup
+
+Install the plugin:
 
 ```bash
-$ bytnode main.js
+$ npm install bytenode-webpack-plugin
 ```
 
-And you're done!
+Then simply add `BytenodePlugin` to your configuration, passing the name of the entrypoint to shim and the new file name to the `entries` field.
+
+## Example
+
+To shim entrypoint "`index.js`" as "`main.js`", here's a basic config file:
+
+```js
+module.exports = {
+  mode: "production",
+  entry: {
+    index: "src/index.js",
+  },
+  output: {
+    dir: "app",
+    filename: "[name].js",
+  },
+  plugins: [new BytenodePlugin({ entries: { index: "main" } })],
+};
+```
+
+You can then compile `main.js` to bytecode using the bytenode cli.
+
+```bash
+$ bytenode app/main.js && rm ./app/main.js
+```
