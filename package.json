@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "files": [
+    "lib/*",
+    "src/*",
+    "*.js",
+    "*.md",
+    "tsconfig.json"
+  ],
   "repository": "https://github.com/sbrow/bytenode-webpack-plugin",
   "author": "Spencer Brower",
   "license": "GPL-3.0+",
@@ -13,7 +20,8 @@
   "description": "Shims your entry points so they can be compiled by Bytenode.",
   "private": false,
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "build"
   },
   "peerDependencies": {
     "webpack": "^4.0.0"
