@@ -21,7 +21,7 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "prepare": "yarn build"
+    "prepare": "yarn build || true"
   },
   "peerDependencies": {
     "webpack": "^4.0.0"
@@ -42,7 +42,7 @@
     "typescript": "^3.5.3",
     "webpack": "^4.39.2"
   },
-  "prettier": "@sbrow/prettier",
+  "prettier": "@sbrow/prettier-config",
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
