@@ -1,4 +1,4 @@
-# bytenode-webpack-plugin
+# Bytenode Webpack Plugin
 
 This plugin makes it easy to use protect your source code with [Bytenode](https://github.com/OsamaAbbas/bytenode) by replacing your entry point with a script that can import bytecode.
 
